@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/08/2021 16:33:38 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Cliente" table="cliente" catalog="academia" optimistic-lock="version">
+        <id name="cpfCliente" type="string">
+            <column name="cpf_cliente" length="14" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="endereco" class="model.Endereco" fetch="select">
+            <column name="cep" length="9" not-null="true" />
+        </many-to-one>
+        <many-to-one name="mensalidade" class="model.Mensalidade" fetch="select">
+            <column name="id_mensalidade" not-null="true" />
+        </many-to-one>
+        <property name="nomeCliente" type="string">
+            <column name="nome_cliente" length="45" not-null="true" />
+        </property>
+        <property name="telefone" type="string">
+            <column name="telefone" length="45" not-null="true" />
+        </property>
+        <property name="sexo" type="char">
+            <column name="sexo" length="1" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="45" not-null="true" />
+        </property>
+        <property name="diaVencimento" type="int">
+            <column name="dia_vencimento" not-null="true" />
+        </property>
+        <property name="objetivo" type="string">
+            <column name="objetivo" length="200" />
+        </property>
+        <set name="pagamentos" table="pagamento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="cpf_cliente" length="14" not-null="true" />
+            </key>
+            <one-to-many class="model.Pagamento" />
+        </set>
+        <set name="planoTreinos" table="plano_treino" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="cpf_cliente" length="14" not-null="true" />
+            </key>
+            <one-to-many class="model.PlanoTreino" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/08/2021 16:33:38 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Mensalidade" table="mensalidade" catalog="academia" optimistic-lock="version">
+        <id name="idMensalidade" type="java.lang.Integer">
+            <column name="id_mensalidade" />
+            <generator class="identity" />
+        </id>
+        <property name="nomeMensalidade" type="string">
+            <column name="nome_mensalidade" length="45" not-null="true" />
+        </property>
+        <property name="valor" type="float">
+            <column name="valor" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="45" not-null="true" />
+        </property>
+        <set name="clientes" table="cliente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_mensalidade" not-null="true" />
+            </key>
+            <one-to-many class="model.Cliente" />
+        </set>
+    </class>
+</hibernate-mapping>

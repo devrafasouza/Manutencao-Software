@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/08/2021 16:33:38 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.PlanoTreino" table="plano_treino" catalog="academia" optimistic-lock="version">
+        <id name="idPlanoTreino" type="java.lang.Integer">
+            <column name="id_plano_treino" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cliente" class="model.Cliente" fetch="select">
+            <column name="cpf_cliente" length="14" not-null="true" />
+        </many-to-one>
+        <many-to-one name="exercicio" class="model.Exercicio" fetch="select">
+            <column name="id_exercicio" not-null="true" />
+        </many-to-one>
+        <many-to-one name="treino" class="model.Treino" fetch="select">
+            <column name="id_treino" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

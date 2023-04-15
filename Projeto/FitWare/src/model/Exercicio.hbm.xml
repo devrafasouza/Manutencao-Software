@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/08/2021 16:33:38 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Exercicio" table="exercicio" catalog="academia" optimistic-lock="version">
+        <id name="idExercicio" type="java.lang.Integer">
+            <column name="id_exercicio" />
+            <generator class="identity" />
+        </id>
+        <property name="nomeExercicio" type="string">
+            <column name="nome_exercicio" length="45" not-null="true" />
+        </property>
+        <property name="qtdSeries" type="int">
+            <column name="qtd_series" not-null="true" />
+        </property>
+        <property name="qtdRepeticoes" type="int">
+            <column name="qtd_repeticoes" not-null="true" />
+        </property>
+        <property name="observacao" type="string">
+            <column name="observacao" length="200" />
+        </property>
+        <set name="planoTreinos" table="plano_treino" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_exercicio" not-null="true" />
+            </key>
+            <one-to-many class="model.PlanoTreino" />
+        </set>
+    </class>
+</hibernate-mapping>
