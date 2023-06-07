@@ -1,6 +1,6 @@
 package model;
 // Generated 31/08/2021 16:33:37 by Hibernate Tools 4.3.1
-
+import br.com.caelum.stella.validation.CPFValidator;
 
 
 /**
@@ -53,7 +53,19 @@ public class Personal  implements java.io.Serializable {
              
       };
     }
-
+    
+   public boolean validaCPF(String cpf){
+         CPFValidator cpfValidator = new CPFValidator();
+         try {
+            cpfValidator.assertValid(cpf);
+            return true;
+         }catch(Exception e){
+            e.printStackTrace();
+            return false;   
+         }
+    }
+   
+ 
 
 }
 

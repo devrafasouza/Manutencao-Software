@@ -9,24 +9,30 @@ import org.hibernate.Session;
  * @author vinicius
  */
 public class FrmPrincipal extends javax.swing.JFrame {
-    public IFrmCliente c;
+    IFrmCliente c;
     FrmLogin l = new FrmLogin();
-    Mensalidade m;
+    //Mensalidade m;
     ArrayList<Mensalidade> mensalidade;
     IFrmPersonal p;
     IFrmPlanoTreino pt;
     IFrmStatus st;
+    IFrmPagamento pa;
     IFrmPlanoMensalidade pm;
     Session s;
     
     /**
      * Creates new form FrmPrincipal
      */
-    public FrmPrincipal(Session s) {        
+    public FrmPrincipal() {        
         initComponents();
+    }
+    
+    public FrmPrincipal(Session s) {        
+        this();
         this.s = s;
         c = null;
         p = null;
+        pm = null;
         pt = null;
         st = null;
     }
@@ -55,16 +61,17 @@ public class FrmPrincipal extends javax.swing.JFrame {
         mniLogout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("FitWare");
 
         javax.swing.GroupLayout dskPrincipalLayout = new javax.swing.GroupLayout(dskPrincipal);
         dskPrincipal.setLayout(dskPrincipalLayout);
         dskPrincipalLayout.setHorizontalGroup(
             dskPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 569, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
         dskPrincipalLayout.setVerticalGroup(
             dskPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 333, Short.MAX_VALUE)
+            .addGap(0, 387, Short.MAX_VALUE)
         );
 
         getContentPane().add(dskPrincipal, java.awt.BorderLayout.CENTER);
@@ -108,6 +115,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         mnRelatorio.setText("Relatório");
 
         mniPagamento.setText("Pagamento");
+        mniPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniPagamentoActionPerformed(evt);
+            }
+        });
         mnRelatorio.add(mniPagamento);
 
         jMenuBar1.add(mnRelatorio);
@@ -184,12 +196,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void mniPlanoTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPlanoTreinoActionPerformed
         if(pt == null){
-            pt = new IFrmPlanoTreino(s);
+            pt = new IFrmPlanoTreino(s);              
             dskPrincipal.add(pt);
-                    
         }
-        if(!pt.isVisible()){
+        if(!pt.isVisible()){            
             pt.setVisible(true);
+            
+            try{
+                pt.moveToFront();
+                pt.requestFocus();
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            
         }else{
             try{
                 pt.moveToFront();
@@ -220,16 +239,25 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void mniPlanoMensalidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPlanoMensalidadeActionPerformed
         if(pm == null){
-            pm = new IFrmPlanoMensalidade(s);
-            dskPrincipal.add(pm);
-                    
+            pm = new IFrmPlanoMensalidade(s); 
+            dskPrincipal.add(pm); 
         }
+        
         if(!pm.isVisible()){
+              
             pm.setVisible(true);
+            
+            try{
+                pm.moveToFront();
+                pm.setSelected(true);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            
         }else{
             try{
                 pm.moveToFront();
-                pm.requestFocus();
+                pm.setSelected(true);
             }catch(Exception ex){
                 ex.printStackTrace();
             }
@@ -240,6 +268,33 @@ public class FrmPrincipal extends javax.swing.JFrame {
         l.setVisible(true);
         dispose();
     }//GEN-LAST:event_mniLogoutActionPerformed
+
+    private void mniPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPagamentoActionPerformed
+        if(pa == null){
+            pa = new IFrmPagamento(s); 
+            dskPrincipal.add(pa); 
+        }
+        
+        if(!pa.isVisible()){
+              
+            pa.setVisible(true);
+            
+            try{
+                pa.moveToFront();
+                pa.setSelected(true);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            
+        }else{
+            try{
+                pa.moveToFront();
+                pa.setSelected(true);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_mniPagamentoActionPerformed
 
     /**
      * @param args the command line arguments

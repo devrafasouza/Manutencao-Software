@@ -2,6 +2,7 @@ package model;
 // Generated 31/08/2021 16:33:37 by Hibernate Tools 4.3.1
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,7 +15,8 @@ public class Pagamento  implements java.io.Serializable {
      private Cliente cliente;
      private Date dataPagamento;
 
-    public Pagamento() {
+    public Pagamento(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Pagamento(Cliente cliente, Date dataPagamento) {
@@ -44,6 +46,16 @@ public class Pagamento  implements java.io.Serializable {
         this.dataPagamento = dataPagamento;
     }
 
+    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    
+    public String[] toRow(){
+   
+         return new String[]{
+             idPagamento.toString(),
+             cliente.getCpfCliente(),
+             df.format(dataPagamento)             
+      };
+    }
 
 
 

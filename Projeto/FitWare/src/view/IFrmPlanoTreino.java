@@ -19,6 +19,7 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
     PlanoTreino planoTreino;
     ArrayList<Cliente> cliente;
     ArrayList<PlanoTreino> pt;
+    ArrayList<Exercicio> ex;
     private DefaultTableModel dtm;
     private int cont = 0;
     private int aux = 0;
@@ -82,8 +83,19 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
         }
         else{
             dtm.removeRow(codigo); 
-            dtm.insertRow(codigo, c.toRow());
         }
+    }
+    
+    private void popularTabela(String cpf){ 
+        pt = (ArrayList<PlanoTreino>) s.createQuery("From PlanoTreino").list();
+        dtm.setRowCount(0);        
+        for(PlanoTreino ptr : pt){
+            if(cpf.equals(ptr.getCliente().getCpfCliente())){
+                dtm.addRow(ptr.toRow()); 
+            }
+           
+            
+        } 
     }
     
     /**
@@ -120,6 +132,7 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         btnNCliente = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -212,21 +225,20 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
                         .addComponent(txtExercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(spnRepeticao, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(spnSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(44, 44, 44)))
+                .addGap(10, 10, 10)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -235,13 +247,13 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(22, 22, 22)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(txtExercicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtExercicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -336,6 +348,13 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnExcluir.setText("Excluir Exercicio");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -344,7 +363,10 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnExcluir)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                 .addContainerGap())
@@ -356,8 +378,13 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnExcluir)
+                                .addGap(19, 19, 19)))
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
@@ -431,6 +458,7 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
                 Campos(true);
                 i = 1;
                 JOptionPane.showMessageDialog(this, "Será criado um Plano de Treino para: "+cl.getNomeCliente());
+                popularTabela(cl.getCpfCliente());
             }
         }
         if(i == 0){
@@ -447,10 +475,45 @@ public class IFrmPlanoTreino extends javax.swing.JInternalFrame {
         Campos(false);
     }//GEN-LAST:event_btnNClienteActionPerformed
 
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int esc = tblPlanoTreino.getSelectedRow();
+
+        if (esc == -1) {
+            JOptionPane.showMessageDialog(this, "Escolha um valor da tabela!",
+                "ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+        } else {
+            
+            pt = (ArrayList<PlanoTreino>) s.createQuery("From PlanoTreino").list();
+            ex = (ArrayList<Exercicio>) s.createQuery("From Exercicio").list();
+
+            PlanoTreino pl = pt.get(esc);
+
+            for(Exercicio e :ex){
+                if(pl.getExercicio().getIdExercicio().equals(e.getIdExercicio())){
+
+                    try {
+                        s.beginTransaction();
+                        s.delete(pl);
+                        s.delete(e);
+                        s.getTransaction().commit();
+
+                        JOptionPane.showMessageDialog(this, "Exclusão realizada com sucesso!");
+                        atualizarTabela(pl,esc);
+                    }
+                    catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, ex);
+                    }
+                }
+            }
+
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnNCliente;
     private javax.swing.JButton btnNovo;

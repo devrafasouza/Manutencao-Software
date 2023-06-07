@@ -19,8 +19,12 @@ public class IFrmPlanoMensalidade extends javax.swing.JInternalFrame {
     /**
      * Creates new form IFrmPlanoMensalidade
      */
-    public IFrmPlanoMensalidade(Session s) {
+    public IFrmPlanoMensalidade() {
         initComponents();
+    }
+    
+    public IFrmPlanoMensalidade(Session s) {
+        this();
         this.s = s;
         dtm = (DefaultTableModel)tblMensalidade.getModel();
         escolha = -1;
@@ -41,7 +45,7 @@ public class IFrmPlanoMensalidade extends javax.swing.JInternalFrame {
     public void limparCampos(){
        txtNome.setText("");
        txtTipo.setText("");
-       spnValor.setValue(1);
+       spnValor.setValue(2);
    }
     
     public boolean campoVazio(){
@@ -105,7 +109,7 @@ public class IFrmPlanoMensalidade extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Tipo :");
 
-        spnValor.setModel(new javax.swing.SpinnerNumberModel(1.0f, 1.0f, null, 1.0f));
+        spnValor.setModel(new javax.swing.SpinnerNumberModel(2.0f, 2.0f, null, 1.0f));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -119,13 +123,13 @@ public class IFrmPlanoMensalidade extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(spnValor, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                            .addComponent(txtTipo))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -284,7 +288,8 @@ public class IFrmPlanoMensalidade extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        int cont = 0;
+        int cont = 0;  
+        IFrmCliente men = new IFrmCliente(s);      
         mensalidade = (ArrayList<Mensalidade>) s.createQuery("From Mensalidade").list();
         for(Mensalidade m : mensalidade){
             if(m.getNomeMensalidade().equals(txtNome.getText())){
@@ -300,8 +305,9 @@ public class IFrmPlanoMensalidade extends javax.swing.JInternalFrame {
 
                 try{  
                     s.beginTransaction();
-                    s.save(m);
+                    s.saveOrUpdate(m);
                     s.getTransaction().commit();
+                    men.popularCombo();
                     JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");                    
                     atualizarTabela(m, escolha);
                     limparCampos();
